@@ -3,36 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Cinta</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffcccc; /* Warna latar belakang */
-            text-align: center;
-            padding: 20px;
-        }
-        
-        h1 {
-            font-size: 24px;
-            color: #ff3366; /* Warna judul */
-        }
-        
-        p {
-            font-size: 16px;
-            color: #333;
-            margin: 10px;
-        }
-        
-        .gambar-cinta {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <title>Login Page</title>
 </head>
 <body>
-    <h1>Selamat Datang di Halaman Cinta</h1>
-    <img src="gambar-cinta.jpg" alt="Gambar Cinta" class="gambar-cinta">
-    <p>Ini adalah halaman web dengan tema cinta yang indah. Semoga cinta selalu menghiasi hidup Anda.</p>
-    <p>Jangan ragu untuk kembali dan mengeksplorasi lebih banyak tentang cinta.</p>
+    <div class="container">
+        <h1>Login</h1>
+        <form>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
 </body>
 </html>
