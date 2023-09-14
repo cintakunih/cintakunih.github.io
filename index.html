@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Situs Cinta</title>
+</head>
+<body>
+    <h1>Selamat Datang di Situs Cinta</h1>
+    <p>Ini adalah situs web spesial untukmu, <span id="nama"></span>!</p>
+
+    <script>
+        // Ambil query parameter 'nama' dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const nama = urlParams.get('nama');
+
+        // Periksa apakah query parameter 'nama' ada dan tidak kosong
+        if (nama) {
+            // Tampilkan nama di dalam elemen dengan id 'nama'
+            document.getElementById('nama').textContent = nama;
+        } else {
+            // Jika query parameter 'nama' tidak ada atau kosong, tampilkan pesan default
+            document.getElementById('nama').textContent = 'Pengunjung';
+        }
+    </script>
+</body>
+</html>
