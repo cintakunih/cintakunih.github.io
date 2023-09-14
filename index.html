@@ -3,25 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Situs Cinta</title>
+    <title>Halaman Cinta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffcccc; /* Warna latar belakang */
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #ff3366; /* Warna judul */
+        }
+        
+        p {
+            font-size: 16px;
+            color: #333;
+            margin: 10px;
+        }
+        
+        .gambar-cinta {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
-    <h1>Selamat Datang di Situs Cinta</h1>
-    <p>Ini adalah situs web spesial untukmu, <span id="nama"></span>!</p>
-
-    <script>
-        // Ambil query parameter 'nama' dari URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const nama = urlParams.get('nama');
-
-        // Periksa apakah query parameter 'nama' ada dan tidak kosong
-        if (nama) {
-            // Tampilkan nama di dalam elemen dengan id 'nama'
-            document.getElementById('nama').textContent = nama;
-        } else {
-            // Jika query parameter 'nama' tidak ada atau kosong, tampilkan pesan default
-            document.getElementById('nama').textContent = 'Pengunjung';
-        }
-    </script>
+    <h1>Selamat Datang di Halaman Cinta</h1>
+    <img src="gambar-cinta.jpg" alt="Gambar Cinta" class="gambar-cinta">
+    <p>Ini adalah halaman web dengan tema cinta yang indah. Semoga cinta selalu menghiasi hidup Anda.</p>
+    <p>Jangan ragu untuk kembali dan mengeksplorasi lebih banyak tentang cinta.</p>
 </body>
 </html>
