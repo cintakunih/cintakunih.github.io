@@ -1,94 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contoh Mengubah Warna Tombol pada SweetAlert</title>
-    <!-- Sertakan library SweetAlert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<meta charset="UTF-8">
+<title>DOGE Faucet + PTC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: url("bg3.png") no-repeat center / cover;
+    font-family: Arial, sans-serif;
+    color: #fff;
+}
+.container { display: flex; height: 100%; }
+
+/* Wallet */
+.wallet {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0,0,0,.6);
+    padding: 12px 16px;
+    border-radius: 10px;
+}
+.wallet span { color: #ffd700; font-weight: bold; }
+
+/* Faucet */
+.faucet {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.faucet-box {
+    background: rgba(0,0,0,.6);
+    padding: 30px 40px;
+    border-radius: 18px;
+    text-align: center;
+}
+.faucet-box img {
+    width: 180px;
+    margin-bottom: 15px;
+}
+
+/* PTC */
+.ptc {
+    width: 320px;
+    background: rgba(0,0,0,.65);
+    padding: 15px;
+    overflow-y: auto;
+}
+.campaign {
+    background: rgba(255,255,255,.08);
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    background: #22c55e;
+    font-weight: bold;
+    cursor: pointer;
+}
+button:disabled { background: #555; }
+
+/* Overlay */
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 999;
+}
+.overlay iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+.overlay-ui {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+.timer {
+    background: rgba(0,0,0,.6);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+.claim-btn {
+    background: #facc15;
+    color: #000;
+}
+</style>
 </head>
 <body>
-    <script>
-            // Tampilkan SweetAlert dengan opsi Ya dan Tidak
-            Swal.fire({
-                title: 'HEEEYYY LATIAAA !!!',
-                showCancelButton: true, 
-                confirmButtonText: 'APA?',
-                confirmButtonColor: '#00FF00',
-                cancelButtonText: 'HMMM?',
-                cancelButtonColor: '#ff0000',
-                allowOutsideClick: false,
-                allowEscapeKey: false
-            }).then((result) => {
-                Swal.fire({
-                    title: 'LAGI NGAPAIN SIHH ??? !!!',
-                    showCancelButton: true,
-                    confirmButtonText: 'DIEM AJ',
-                    cancelButtonText: 'LG SBK',
-                    confirmButtonColor: '#00FF00',
-                    cancelButtonColor: '#ff0000',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false
-                }).then((result) => {
-                    Swal.fire({
-                        title: 'OH GITU CEK DLU AH !!!',
-                        showCancelButton: true,
-                        confirmButtonText: 'HAH ?',
-                        cancelButtonText: 'APA SH GJ',
-                        confirmButtonColor: '#00FF00',
-                        cancelButtonColor: '#ff0000',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false
-                    }).then((result) => {
-                        Swal.fire({
-                            title: 'MASUKIN NIH INDIKATOR CINTA HEHEHE',
-                            input: 'range',
-                            inputAttributes: {
-                                min: 1,
-                                max: 100,
-                                step: 1,
-                                value: 50
-                            },
-                            inputValue: 50,
-                            inputValidator: (value) => {
-                                return new Promise((resolve) => {
-                                    const percentValue = Math.round(parseFloat(value));
-                                    Swal.update({
-                                        text: `Persentase: ${percentValue}%`
-                                    });
-                                    resolve();
-                                });
-                            },
-                            confirmButtonText: 'SUBMIT',
-                            confirmButtonColor: '#00FF00',
-                            allowOutsideClick: false
-                        }).then((result) => {
-                            const inputPersentase = Swal.getInput().value;
-                            if (inputPersentase > 80) {
-                                Swal.fire({
-                                    title: 'Segede ini '+inputPersentase+'% ??? <br> DIH BUCIN  !!!',
-                                    confirmButtonText: 'BIARIN !',
-                                    confirmButtonColor: '#00FF00',
-                                    allowOutsideClick: false,
-                                    allowEscapeKey: false
-                                }).then((result) => {
 
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'CUMAN SEGINI '+inputPersentase+'% ??? <br> DIH PARAH  !!!',
-                                    cancelButtonText: 'BIARIN !',
-                                    cancelButtonColor: '#ff0000',
-                                    allowOutsideClick: false,
-                                    allowEscapeKey: false
-                                }).then((result) => {
+<div class="wallet">
+    Wallet: <span id="balance">0.0000</span> DOGE
+</div>
 
-                                });
-                            }
-                        });
-                    });
-                });
-            });
-    </script>
+<div class="container">
+
+    <!-- Faucet -->
+    <div class="faucet">
+        <div class="faucet-box">
+            <img src="dogefct.png">
+            <div>
+                <button id="faucetBtn" onclick="openFaucet()">CLAIM FAUCET</button>
+                <div id="faucetInfo">0 / 10</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PTC -->
+    <div class="ptc">
+        <h3>PTC Campaigns</h3>
+        <div id="ptcList"></div>
+    </div>
+
+</div>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay">
+    <div class="overlay-ui">
+        <div class="timer" id="timer">5</div>
+        <button class="claim-btn" id="claimBtn" disabled>CLAIM</button>
+    </div>
+    <iframe id="frame"></iframe>
+</div>
+
+<script>
+/* CONFIG */
+const FAUCET_URL = "https://www.rotate4all.com/ptp/promote-296617";
+const PTC_URL    = "https://www.rotate4all.com/ptp/promote-298676";
+const VIEW_TIME  = 5;
+const REWARD     = 0.0004;
+
+/* STATE (NO STORAGE) */
+let balance = 0;
+let faucetCount = 0;
+let mode = "";
+
+/* UI */
+function updateUI() {
+    document.getElementById("balance").innerText = balance.toFixed(4);
+    document.getElementById("faucetInfo").innerText = `${faucetCount} / 10`;
+    document.getElementById("faucetBtn").disabled = faucetCount >= 10;
+}
+
+/* Faucet */
+function openFaucet() {
+    mode = "faucet";
+    openOverlay(FAUCET_URL);
+}
+
+/* PTC */
+function openPTC() {
+    mode = "ptc";
+    openOverlay(PTC_URL);
+}
+
+/* Overlay */
+function openOverlay(url) {
+    const overlay = document.getElementById("overlay");
+    const frame   = document.getElementById("frame");
+    const timerEl = document.getElementById("timer");
+    const claimBtn = document.getElementById("claimBtn");
+
+    overlay.style.display = "block";
+    frame.src = url;
+    claimBtn.disabled = true;
+
+    let seconds = VIEW_TIME;
+    timerEl.innerText = seconds;
+
+    const interval = setInterval(() => {
+        seconds--;
+        timerEl.innerText = seconds;
+        if (seconds <= 0) {
+            clearInterval(interval);
+            timerEl.innerText = "Done";
+            claimBtn.disabled = false;
+        }
+    }, 1000);
+
+    claimBtn.onclick = () => claim(interval);
+}
+
+/* CLAIM (FIXED) */
+function claim(interval) {
+    clearInterval(interval);
+
+    if (mode === "faucet" && faucetCount < 10) {
+        balance += REWARD;
+        faucetCount++;
+    }
+
+    if (mode === "ptc") {
+        balance += REWARD; // ✅ PTC NOW ADDS BALANCE
+    }
+
+    updateUI();
+
+    document.getElementById("frame").src = "";
+    document.getElementById("overlay").style.display = "none";
+}
+
+/* Generate 50 PTC */
+const ptcList = document.getElementById("ptcList");
+for (let i = 1; i <= 50; i++) {
+    const div = document.createElement("div");
+    div.className = "campaign";
+    div.innerHTML = `
+        <span>PTC ${i}</span>
+        <button onclick="openPTC()">VIEW</button>
+    `;
+    ptcList.appendChild(div);
+}
+
+updateUI();
+</script>
+
 </body>
 </html>
