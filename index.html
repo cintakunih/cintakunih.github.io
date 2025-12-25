@@ -136,6 +136,18 @@ button:disabled { background: #555; }
     </div>
     <iframe id="frame"></iframe>
 </div>
+<h3>Shortlink Task</h3>
+
+<div class="campaign">
+    <span>ShrinkMe Shortlink</span>
+    <button onclick="goShortlink()">GO</button>
+</div>
+
+<div class="campaign">
+    <span>Claim Shortlink</span>
+    <button id="shortlinkClaimBtn" disabled onclick="claimShortlink()">CLAIM</button>
+</div>
+
 
 <script>
 /* CONFIG */
@@ -227,6 +239,43 @@ for (let i = 1; i <= 50; i++) {
 }
 
 updateUI();
+
+/* SHORTLINK CONFIG */
+const SHORTLINK_URL = "https://shrinkme.io/XXXXXX"; 
+// ganti XXXXX dengan link ShrinkMe kamu
+
+const SHORTLINK_RETURN = "https://cintakunih.github.io/?shortlink=done";
+const SHORTLINK_REWARD = 0.002;
+
+/* GO SHORTLINK */
+function goShortlink() {
+    window.open(SHORTLINK_URL, "_blank");
+    alert("Complete the shortlink, then return to this page.");
+}
+
+/* DETECT RETURN FROM SHORTLINK */
+const params = new URLSearchParams(window.location.search);
+const shortlinkDone = params.get("shortlink") === "done";
+
+if (shortlinkDone) {
+    document.getElementById("shortlinkClaimBtn").disabled = false;
+}
+
+/* CLAIM SHORTLINK */
+function claimShortlink() {
+    if (!shortlinkDone) return;
+
+    balance += SHORTLINK_REWARD;
+    updateUI();
+
+    // disable button after claim
+    document.getElementById("shortlinkClaimBtn").disabled = true;
+
+    // remove URL parameter (prevent double claim)
+    history.replaceState({}, document.title, location.pathname);
+
+    alert("Shortlink reward claimed: +0.002 DOGE");
+}
 </script>
 
 </body>
