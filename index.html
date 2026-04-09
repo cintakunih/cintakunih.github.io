@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Iframe Stack</title>
+  <title>Hello World</title>
   <style>
     html, body {
       margin: 0;
@@ -12,88 +12,57 @@
 
     iframe {
       position: absolute;
+      top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       border: none;
     }
-
-    #f1 { top: 0; z-index: 1; }
-    #f2 { top: 40px; z-index: 2; }
-    #f3 { top: 80px; z-index: 3; }
-    #f4 { top: 120px; z-index: 4; }
-    #f5 { top: 160px; z-index: 5; }
   </style>
 </head>
 <body>
 
 <script>
-  const sources = [
-    "https://www.rotate4all.com/ptp/promote-296617",
-    "https://www.rotate4all.com/ptp/promote-299672",
-    "https://www.rotate4all.com/ptp/promote-296617",
-    "https://www.rotate4all.com/ptp/promote-299672",
-    "about:blank"
-  ];
-
   const colors = [
-    "rgba(255,0,0,0.2)",
-    "rgba(0,255,0,0.2)",
-    "rgba(0,0,255,0.2)",
-    "rgba(255,255,0,0.2)",
-    "linear-gradient(135deg, #667eea, #764ba2)"
+    "rgba(255,0,0,0.3)",
+    "rgba(0,255,0,0.3)",
+    "rgba(0,0,255,0.3)",
+    "rgba(255,255,0,0.3)",
+    "rgba(255,0,255,0.4)"
   ];
 
-  sources.forEach((src, i) => {
+  for (let i = 0; i < 5; i++) {
     setTimeout(() => {
       const iframe = document.createElement("iframe");
-      iframe.id = "f" + (i + 1);
-      iframe.src = src;
+      iframe.style.zIndex = i + 1;
 
       iframe.onload = () => {
-        try {
-          const doc = iframe.contentDocument || iframe.contentWindow.document;
-          doc.open();
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.open();
 
-          // iframe ke-5 = hello world
-          if (i === 4) {
-            doc.write(`
-              <body style="
-                margin:0;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                height:100vh;
-                font-size:40px;
-                color:white;
-                font-family:sans-serif;
-                background:${colors[i]};
-              ">
-                Hello World 🚀
-              </body>
-            `);
-          } else {
-            // iframe 1-4 hanya background warna
-            doc.write(`
-              <body style="
-                margin:0;
-                height:100vh;
-                background:${colors[i]};
-              ">
-              </body>
-            `);
-          }
+        doc.write(`
+          <body style="
+            margin:0;
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:40px;
+            color:white;
+            font-family:sans-serif;
+            background:${colors[i]};
+          ">
+            IFRAME ${i + 1}
+          </body>
+        `);
 
-          doc.close();
-        } catch (e) {
-          // kalau cross-origin (rotate4all), minimal kasih warna overlay
-          iframe.style.background = colors[i];
-        }
+        doc.close();
       };
 
+      iframe.src = "about:blank";
       document.body.appendChild(iframe);
-    }, i * 200); // 0.2 detik
-  });
+    }, i * 200); // delay 0.2 detik
+  }
 </script>
 
 </body>
