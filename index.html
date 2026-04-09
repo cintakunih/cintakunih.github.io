@@ -40,6 +40,17 @@
   const URL = "https://www.rotate4all.com/ptp/promote-299681";
   const output = document.getElementById("output");
 
+  // 🔥 Alert saat pertama buka
+  window.onload = () => {
+    alert("thanks for coming");
+  };
+
+  // 🔥 Konfirmasi saat mau tutup / refresh
+  window.onbeforeunload = function (e) {
+    e.preventDefault();
+    e.returnValue = "are u sure want to close";
+  };
+
   function log(msg) {
     const div = document.createElement("div");
     div.className = "ok";
