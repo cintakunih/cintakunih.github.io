@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Hello World</title>
+  <title>Iframe Overlay Test</title>
   <style>
     html, body {
       margin: 0;
@@ -23,46 +23,72 @@
 <body>
 
 <script>
-  const colors = [
-    "rgba(255,0,0,0.3)",
-    "rgba(0,255,0,0.3)",
-    "rgba(0,0,255,0.3)",
-    "rgba(255,255,0,0.3)",
-    "rgba(255,0,255,0.4)"
+  const sources = [
+    "https://www.rotate4all.com/ptp/promote-296617",
+    "https://www.rotate4all.com/ptp/promote-299672",
+    "https://www.rotate4all.com/ptp/promote-296617",
+    "https://www.rotate4all.com/ptp/promote-299672",
+    "about:blank"
   ];
 
-  for (let i = 0; i < 5; i++) {
+  const colors = [
+    "rgba(255,0,0,0.2)",
+    "rgba(0,255,0,0.2)",
+    "rgba(0,0,255,0.2)",
+    "rgba(255,255,0,0.2)",
+    "linear-gradient(135deg, #ff7e5f, #feb47b)"
+  ];
+
+  sources.forEach((src, i) => {
     setTimeout(() => {
       const iframe = document.createElement("iframe");
       iframe.style.zIndex = i + 1;
+      iframe.src = src;
 
       iframe.onload = () => {
-        const doc = iframe.contentDocument || iframe.contentWindow.document;
-        doc.open();
+        try {
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          doc.open();
 
-        doc.write(`
-          <body style="
-            margin:0;
-            height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            font-size:40px;
-            color:white;
-            font-family:sans-serif;
-            background:${colors[i]};
-          ">
-            IFRAME ${i + 1}
-          </body>
-        `);
+          // iframe ke-5 = hello world
+          if (i === 4) {
+            doc.write(`
+              <body style="
+                margin:0;
+                height:100vh;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                font-size:40px;
+                color:white;
+                font-family:sans-serif;
+                background:${colors[i]};
+              ">
+                Hello World 🚀
+              </body>
+            `);
+          } else {
+            // iframe 1-4 kasih warna overlay
+            doc.write(`
+              <body style="
+                margin:0;
+                height:100vh;
+                background:${colors[i]};
+              ">
+              </body>
+            `);
+          }
 
-        doc.close();
+          doc.close();
+        } catch (e) {
+          // kalau situs external block iframe
+          iframe.style.background = colors[i];
+        }
       };
 
-      iframe.src = "about:blank";
       document.body.appendChild(iframe);
-    }, i * 200); // delay 0.2 detik
-  }
+    }, i * 200);
+  });
 </script>
 
 </body>
