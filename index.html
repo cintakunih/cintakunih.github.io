@@ -2,93 +2,87 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Iframe Overlay Test</title>
+  <title>Iframe Monitor</title>
   <style>
     html, body {
       margin: 0;
       height: 100%;
       overflow: hidden;
+      font-family: monospace;
     }
 
     iframe {
       position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      border: none;
+    }
+
+    #log {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      border: none;
+      background: linear-gradient(135deg,#1e3c72,#2a5298);
+      color: #fff;
+      padding: 20px;
+      overflow-y: auto;
     }
+
+    .ok { color: #00ff9d; }
+    .fail { color: #ff4d4d; }
   </style>
 </head>
 <body>
 
+<div id="log">
+  <h2>🚀 Hello World - Iframe Monitor</h2>
+  <div id="output"></div>
+</div>
+
 <script>
-  const sources = [
-    "https://www.rotate4all.com/ptp/promote-296617",
-    "https://www.rotate4all.com/ptp/promote-299672",
-    "https://www.rotate4all.com/ptp/promote-296617",
-    "https://www.rotate4all.com/ptp/promote-299672",
-    "about:blank"
-  ];
+  const URL = "https://www.rotate4all.com/ptp/promote-299681";
+  const output = document.getElementById("output");
 
-  const colors = [
-    "rgba(255,0,0,0.2)",
-    "rgba(0,255,0,0.2)",
-    "rgba(0,0,255,0.2)",
-    "rgba(255,255,0,0.2)",
-    "linear-gradient(135deg, #ff7e5f, #feb47b)"
-  ];
+  function log(msg, type="") {
+    const div = document.createElement("div");
+    div.className = type;
+    div.textContent = "[" + new Date().toLocaleTimeString() + "] " + msg;
+    output.appendChild(div);
+    output.scrollTop = output.scrollHeight;
+  }
 
-  sources.forEach((src, i) => {
+  function createIframe(i) {
+    const iframe = document.createElement("iframe");
+    iframe.src = URL;
+
+    let loaded = false;
+
+    iframe.onload = () => {
+      loaded = true;
+      log("Iframe " + i + " loaded ✅", "ok");
+    };
+
+    // fallback kalau stuck
     setTimeout(() => {
-      const iframe = document.createElement("iframe");
-      iframe.style.zIndex = i + 1;
-      iframe.src = src;
+      if (!loaded) {
+        log("Iframe " + i + " timeout / blocked ❌", "fail");
+      }
+    }, 5000);
 
-      iframe.onload = () => {
-        try {
-          const doc = iframe.contentDocument || iframe.contentWindow.document;
-          doc.open();
+    document.body.appendChild(iframe);
+  }
 
-          // iframe ke-5 = hello world
-          if (i === 4) {
-            doc.write(`
-              <body style="
-                margin:0;
-                height:100vh;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                font-size:40px;
-                color:white;
-                font-family:sans-serif;
-                background:${colors[i]};
-              ">
-                Hello World 🚀
-              </body>
-            `);
-          } else {
-            // iframe 1-4 kasih warna overlay
-            doc.write(`
-              <body style="
-                margin:0;
-                height:100vh;
-                background:${colors[i]};
-              ">
-              </body>
-            `);
-          }
-
-          doc.close();
-        } catch (e) {
-          // kalau situs external block iframe
-          iframe.style.background = colors[i];
-        }
-      };
-
-      document.body.appendChild(iframe);
+  // load 10 iframe dengan delay 0.2 detik
+  for (let i = 1; i <= 10; i++) {
+    setTimeout(() => {
+      log("Loading iframe " + i + "...");
+      createIframe(i);
     }, i * 200);
-  });
+  }
+
 </script>
 
 </body>
