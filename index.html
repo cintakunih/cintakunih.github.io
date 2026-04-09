@@ -2,44 +2,78 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Full Overlay Iframe</title>
+  <title>Iframe Tab Stack</title>
   <style>
     html, body {
       margin: 0;
-      padding: 0;
       height: 100%;
       overflow: hidden;
+      background: #ddd;
     }
 
     .layer {
-      position: fixed; /* full layar terus */
-      top: 0;
+      position: absolute;
       left: 0;
       width: 100%;
       height: 100%;
       border: none;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+      border-radius: 10px 10px 0 0;
+      overflow: hidden;
     }
 
+    /* Layer bawah */
     #layer1 {
+      top: 0;
       z-index: 1;
     }
 
+    /* Layer tengah (turun sedikit) */
     #layer2 {
+      top: 40px;
       z-index: 2;
-      opacity: 0.7;
     }
 
+    /* Layer atas (turun lebih banyak) */
     #layer3 {
+      top: 80px;
       z-index: 3;
-      opacity: 0.4;
+    }
+
+    /* header tipis biar keliatan seperti tab */
+    .tab {
+      height: 40px;
+      background: #333;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      font-size: 14px;
+    }
+
+    iframe {
+      width: 100%;
+      height: calc(100% - 40px);
+      border: none;
     }
   </style>
 </head>
 <body>
 
-  <iframe id="layer1" class="layer" src="https://www.rotate4all.com/ptp/promote-299672"></iframe>
-  <iframe id="layer2" class="layer" src="https://www.rotate4all.com/ptp/promote-299672"></iframe>
-  <iframe id="layer3" class="layer" src="https://www.rotate4all.com/ptp/promote-299672"></iframe>
+  <div id="layer1" class="layer">
+    <div class="tab">Tab 1</div>
+    <iframe src="https://www.rotate4all.com/ptp/promote-296617"></iframe>
+  </div>
+
+  <div id="layer2" class="layer">
+    <div class="tab">Tab 2</div>
+    <iframe src="https://www.rotate4all.com/ptp/promote-296617"></iframe>
+  </div>
+
+  <div id="layer3" class="layer">
+    <div class="tab">Tab 3</div>
+    <iframe src="https://www.rotate4all.com/ptp/promote-296617"></iframe>
+  </div>
 
 </body>
 </html>
