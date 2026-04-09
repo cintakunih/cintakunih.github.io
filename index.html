@@ -2,78 +2,66 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Iframe Tab Stack</title>
+  <title>Hello World</title>
   <style>
     html, body {
       margin: 0;
       height: 100%;
       overflow: hidden;
-      background: #ddd;
     }
 
-    .layer {
+    iframe {
       position: absolute;
       left: 0;
       width: 100%;
       height: 100%;
       border: none;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
-      border-radius: 10px 10px 0 0;
-      overflow: hidden;
     }
 
-    /* Layer bawah */
-    #layer1 {
-      top: 0;
-      z-index: 1;
-    }
+    #f1 { top: 0; z-index: 1; }
+    #f2 { top: 40px; z-index: 2; }
+    #f3 { top: 80px; z-index: 3; }
+    #f4 { top: 120px; z-index: 4; }
 
-    /* Layer tengah (turun sedikit) */
-    #layer2 {
-      top: 40px;
-      z-index: 2;
-    }
-
-    /* Layer atas (turun lebih banyak) */
-    #layer3 {
-      top: 80px;
-      z-index: 3;
-    }
-
-    /* header tipis biar keliatan seperti tab */
-    .tab {
-      height: 40px;
-      background: #333;
-      color: white;
-      display: flex;
-      align-items: center;
-      padding-left: 10px;
-      font-size: 14px;
-    }
-
-    iframe {
+    /* Hello World layer */
+    #hello {
+      position: absolute;
+      top: 160px;
       width: 100%;
-      height: calc(100% - 40px);
-      border: none;
+      height: calc(100% - 160px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 40px;
+      color: white;
+      font-family: sans-serif;
+      z-index: 5;
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
     }
   </style>
 </head>
 <body>
 
-  <div id="layer1" class="layer">
-    <div class="tab">Tab 1</div>
-    <iframe src="https://www.rotate4all.com/ptp/promote-296617"></iframe>
-  </div>
+<!-- langsung tampil -->
+<div id="hello">Hello World 🚀</div>
 
-  <div id="layer2" class="layer">
-    <div class="tab">Tab 2</div>
-    <iframe src="https://www.rotate4all.com/ptp/promote-296617"></iframe>
-  </div>
+<script>
+  const sources = [
+    "https://www.rotate4all.com/ptp/promote-296617",
+    "https://www.rotate4all.com/ptp/promote-299672",
+    "https://www.rotate4all.com/ptp/promote-296617",
+    "https://www.rotate4all.com/ptp/promote-299672"
+  ];
 
-  <div id="layer3" class="layer">
-    <div class="tab">Tab 3</div>
-    <iframe src="https://www.rotate4all.com/ptp/promote-296617"></iframe>
-  </div>
+  sources.forEach((src, i) => {
+    setTimeout(() => {
+      const iframe = document.createElement("iframe");
+      iframe.id = "f" + (i + 1);
+      iframe.src = src;
+      document.body.appendChild(iframe);
+    }, i * 500);
+  });
+</script>
 
 </body>
 </html>
