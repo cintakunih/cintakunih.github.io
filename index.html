@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Hello World</title>
+  <title>Iframe Stack</title>
   <style>
     html, body {
       margin: 0;
@@ -22,35 +22,26 @@
     #f2 { top: 40px; z-index: 2; }
     #f3 { top: 80px; z-index: 3; }
     #f4 { top: 120px; z-index: 4; }
-
-    /* Hello World layer */
-    #hello {
-      position: absolute;
-      top: 160px;
-      width: 100%;
-      height: calc(100% - 160px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 40px;
-      color: white;
-      font-family: sans-serif;
-      z-index: 5;
-      background: linear-gradient(135deg, #ff7e5f, #feb47b);
-    }
+    #f5 { top: 160px; z-index: 5; }
   </style>
 </head>
 <body>
-
-<!-- langsung tampil -->
-<div id="hello">Hello World 🚀</div>
 
 <script>
   const sources = [
     "https://www.rotate4all.com/ptp/promote-296617",
     "https://www.rotate4all.com/ptp/promote-299672",
     "https://www.rotate4all.com/ptp/promote-296617",
-    "https://www.rotate4all.com/ptp/promote-299672"
+    "https://www.rotate4all.com/ptp/promote-299672",
+    "about:blank"
+  ];
+
+  const colors = [
+    "rgba(255,0,0,0.2)",
+    "rgba(0,255,0,0.2)",
+    "rgba(0,0,255,0.2)",
+    "rgba(255,255,0,0.2)",
+    "linear-gradient(135deg, #667eea, #764ba2)"
   ];
 
   sources.forEach((src, i) => {
@@ -58,8 +49,50 @@
       const iframe = document.createElement("iframe");
       iframe.id = "f" + (i + 1);
       iframe.src = src;
+
+      iframe.onload = () => {
+        try {
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          doc.open();
+
+          // iframe ke-5 = hello world
+          if (i === 4) {
+            doc.write(`
+              <body style="
+                margin:0;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                height:100vh;
+                font-size:40px;
+                color:white;
+                font-family:sans-serif;
+                background:${colors[i]};
+              ">
+                Hello World 🚀
+              </body>
+            `);
+          } else {
+            // iframe 1-4 hanya background warna
+            doc.write(`
+              <body style="
+                margin:0;
+                height:100vh;
+                background:${colors[i]};
+              ">
+              </body>
+            `);
+          }
+
+          doc.close();
+        } catch (e) {
+          // kalau cross-origin (rotate4all), minimal kasih warna overlay
+          iframe.style.background = colors[i];
+        }
+      };
+
       document.body.appendChild(iframe);
-    }, i * 500);
+    }, i * 200); // 0.2 detik
   });
 </script>
 
