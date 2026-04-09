@@ -1,282 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>DOGE Faucet + PTC</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Full Overlay Iframe</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
 
-<style>
-body {
-    margin: 0;
-    height: 100vh;
-    background: url("bg3.png") no-repeat center / cover;
-    font-family: Arial, sans-serif;
-    color: #fff;
-}
-.container { display: flex; height: 100%; }
+    .layer {
+      position: fixed; /* full layar terus */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
 
-/* Wallet */
-.wallet {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(0,0,0,.6);
-    padding: 12px 16px;
-    border-radius: 10px;
-}
-.wallet span { color: #ffd700; font-weight: bold; }
+    #layer1 {
+      z-index: 1;
+    }
 
-/* Faucet */
-.faucet {
-    flex: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.faucet-box {
-    background: rgba(0,0,0,.6);
-    padding: 30px 40px;
-    border-radius: 18px;
-    text-align: center;
-}
-.faucet-box img {
-    width: 180px;
-    margin-bottom: 15px;
-}
+    #layer2 {
+      z-index: 2;
+      opacity: 0.7;
+    }
 
-/* PTC */
-.ptc {
-    width: 320px;
-    background: rgba(0,0,0,.65);
-    padding: 15px;
-    overflow-y: auto;
-}
-.campaign {
-    background: rgba(255,255,255,.08);
-    padding: 8px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-}
-
-button {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 8px;
-    background: #22c55e;
-    font-weight: bold;
-    cursor: pointer;
-}
-button:disabled { background: #555; }
-
-/* Overlay */
-.overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: #000;
-    z-index: 999;
-}
-.overlay iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-.overlay-ui {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-}
-.timer {
-    background: rgba(0,0,0,.6);
-    padding: 8px 12px;
-    border-radius: 8px;
-}
-.claim-btn {
-    background: #facc15;
-    color: #000;
-}
-</style>
+    #layer3 {
+      z-index: 3;
+      opacity: 0.4;
+    }
+  </style>
 </head>
 <body>
 
-<div class="wallet">
-    Wallet: <span id="balance">0.0000</span> DOGE
-</div>
-
-<div class="container">
-
-    <!-- Faucet -->
-    <div class="faucet">
-        <div class="faucet-box">
-            <img src="dogefct.png">
-            <div>
-                <button id="faucetBtn" onclick="openFaucet()">CLAIM FAUCET</button>
-                <div id="faucetInfo">0 / 10</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PTC -->
-    <div class="ptc">
-        <h3>PTC Campaigns</h3>
-        <div id="ptcList"></div>
-    </div>
-
-</div>
-
-<!-- Overlay -->
-<div class="overlay" id="overlay">
-    <div class="overlay-ui">
-        <div class="timer" id="timer">5</div>
-        <button class="claim-btn" id="claimBtn" disabled>CLAIM</button>
-    </div>
-    <iframe id="frame"></iframe>
-</div>
-<h3>Shortlink Task</h3>
-
-<div class="campaign">
-    <span>ShrinkMe Shortlink</span>
-    <button onclick="goShortlink()">GO</button>
-</div>
-
-<div class="campaign">
-    <span>Claim Shortlink</span>
-    <button id="shortlinkClaimBtn" disabled onclick="claimShortlink()">CLAIM</button>
-</div>
-
-
-<script>
-/* CONFIG */
-const FAUCET_URL = "https://www.rotate4all.com/ptp/promote-296617";
-const PTC_URL    = "https://www.rotate4all.com/ptp/promote-298676";
-const VIEW_TIME  = 5;
-const REWARD     = 0.0004;
-
-/* STATE (NO STORAGE) */
-let balance = 0;
-let faucetCount = 0;
-let mode = "";
-
-/* UI */
-function updateUI() {
-    document.getElementById("balance").innerText = balance.toFixed(4);
-    document.getElementById("faucetInfo").innerText = `${faucetCount} / 10`;
-    document.getElementById("faucetBtn").disabled = faucetCount >= 10;
-}
-
-/* Faucet */
-function openFaucet() {
-    mode = "faucet";
-    openOverlay(FAUCET_URL);
-}
-
-/* PTC */
-function openPTC() {
-    mode = "ptc";
-    openOverlay(PTC_URL);
-}
-
-/* Overlay */
-function openOverlay(url) {
-    const overlay = document.getElementById("overlay");
-    const frame   = document.getElementById("frame");
-    const timerEl = document.getElementById("timer");
-    const claimBtn = document.getElementById("claimBtn");
-
-    overlay.style.display = "block";
-    frame.src = url;
-    claimBtn.disabled = true;
-
-    let seconds = VIEW_TIME;
-    timerEl.innerText = seconds;
-
-    const interval = setInterval(() => {
-        seconds--;
-        timerEl.innerText = seconds;
-        if (seconds <= 0) {
-            clearInterval(interval);
-            timerEl.innerText = "Done";
-            claimBtn.disabled = false;
-        }
-    }, 1000);
-
-    claimBtn.onclick = () => claim(interval);
-}
-
-/* CLAIM (FIXED) */
-function claim(interval) {
-    clearInterval(interval);
-
-    if (mode === "faucet" && faucetCount < 10) {
-        balance += REWARD;
-        faucetCount++;
-    }
-
-    if (mode === "ptc") {
-        balance += REWARD; // ✅ PTC NOW ADDS BALANCE
-    }
-
-    updateUI();
-
-    document.getElementById("frame").src = "";
-    document.getElementById("overlay").style.display = "none";
-}
-
-/* Generate 50 PTC */
-const ptcList = document.getElementById("ptcList");
-for (let i = 1; i <= 50; i++) {
-    const div = document.createElement("div");
-    div.className = "campaign";
-    div.innerHTML = `
-        <span>PTC ${i}</span>
-        <button onclick="openPTC()">VIEW</button>
-    `;
-    ptcList.appendChild(div);
-}
-
-updateUI();
-
-/* SHORTLINK CONFIG */
-const SHORTLINK_URL = "https://shrinkme.io/XXXXXX"; 
-// ganti XXXXX dengan link ShrinkMe kamu
-
-const SHORTLINK_RETURN = "https://cintakunih.github.io/?shortlink=done";
-const SHORTLINK_REWARD = 0.002;
-
-/* GO SHORTLINK */
-function goShortlink() {
-    window.open(SHORTLINK_URL, "_blank");
-    alert("Complete the shortlink, then return to this page.");
-}
-
-/* DETECT RETURN FROM SHORTLINK */
-const params = new URLSearchParams(window.location.search);
-const shortlinkDone = params.get("shortlink") === "done";
-
-if (shortlinkDone) {
-    document.getElementById("shortlinkClaimBtn").disabled = false;
-}
-
-/* CLAIM SHORTLINK */
-function claimShortlink() {
-    if (!shortlinkDone) return;
-
-    balance += SHORTLINK_REWARD;
-    updateUI();
-
-    // disable button after claim
-    document.getElementById("shortlinkClaimBtn").disabled = true;
-
-    // remove URL parameter (prevent double claim)
-    history.replaceState({}, document.title, location.pathname);
-
-    alert("Shortlink reward claimed: +0.002 DOGE");
-}
-</script>
+  <iframe id="layer1" class="layer" src="https://www.rotate4all.com/ptp/promote-299672"></iframe>
+  <iframe id="layer2" class="layer" src="https://www.rotate4all.com/ptp/promote-299672"></iframe>
+  <iframe id="layer3" class="layer" src="https://www.rotate4all.com/ptp/promote-299672"></iframe>
 
 </body>
 </html>
